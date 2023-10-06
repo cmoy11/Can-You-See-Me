@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <title>Can You See Me</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
+    <link rel="stylesheet" href="static/css/index.css">
+    <link rel="icon" href="static/favicon/favicon.ico" type="image/x-icon">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&family=Fredoka:wght@300;400;500&display=swap');
+
+        .description {
+            font-size: 1.3em;
+        }
+
+        body {
+            background-image: url('static/img/bg.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            overflow-y: hidden;
+        }
+
+        p {
+            font-family: "Fredoka", sans-serif;
+            font-weight: 400;
+            color: #000;
+
+        }
+
+        .login-dark {
+            position: relative;
+            height: 100vh;
+        }
+
+        .logo-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            max-width: 30%;
+            text-align: center;
+        }
+
+        .btn {
+            margin: auto;
+            margin-bottom: 10px;
+            border-radius: 50px;
+            font-family: "Fredoka", sans-serif;
+        }
+
+        a {
+            font-family: "Fredoka", sans-serif;
+            font-weight: 400;
+            text-decoration: underline !important;
+        }
+
+        a:hover {
+            pointer: cursor;
+        }
+
+        a:visited {
+            font-family: "Fredoka", sans-serif;
+            font-weight: 400;
+            color: #000;
+            text-decoration: underline !important;
+        }
+
+        .links {
+            color: #000 !important;
+            font-weight: 400;
+        }
+
+        .btn-primary {
+            background-color: #FF0098;
+            border: none;
+        }
+
+        /* Add custom styles for smaller screens */
+        @media (max-width: 768px) {
+            .logo-container {
+                max-width: 90%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <section class="login-dark">
+        <div class="container logo-container">
+            <div class="row">
+                <div class="text-center">
+                    <img src="static/img/logo/logo.png" width="100%" alt="Logo">
+                    <p class="description">The ultimate yearbook photo-tagging app that combines facial recognition, geotags, and a
+                        community-driven map</p>
+                    <button type="button" class="btn btn-primary d-block center" style="font-size: 1.2rem" onclick="window.location.href='/join'"">
+                    Get started</button>
+                    <p>Already have an account? <a class="links" href="/login">Login.</a></p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+</html>

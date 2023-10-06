@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <link rel="stylesheet" href="static/css/dashboards.css" />
+  <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
+  <link rel="icon" href="static/favicon/favicon.ico" type="image/x-icon">
+  <script src="https://js.arcgis.com/4.27/"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+  <script src="static/js/main.js"></script>
+  <style>
+    form,
+    input {
+      text-align: center;
+      margin: auto;
+      font-family: 'Fredoka', sans-serif;
+    }
+
+    #image-container {
+      width: 10em;
+      height: 10em;
+      border-radius: 50%;
+      overflow: hidden;
+      display: block;
+      margin: 20px auto;
+    }
+
+    #image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    .input-field {
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Style the labels */
+    .input-field label {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    /* Style the input fields */
+    .input-field input {
+      width: 100%;
+      padding: 10px;
+      border: 2px solid #ccc;
+      border-radius: 20px;
+      font-size: 16px;
+    }
+
+/* Add styles for the user details */
+.user-detail {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #ccc;
+  border-radius: 20px;
+  font-size: 16px;
+  text-align: center;
+}
+
+/* Add margin to separate user details from other input fields */
+.user-detail + .input-field,
+.input-field + .user-detail {
+  margin-top: 15px;
+}
+
+
+    button {
+      height: 44px;
+      display: block;
+      margin: 10px auto;
+      width: 75%;
+      border-radius: 50px;
+      border: none;
+      background-color: #FF0098;
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 400;
+      font-size: 20px;
+    }
+
+    button:hover {
+      background-color: #fff;
+      border: #FF0098 1px solid;
+      color: #FF0098;
+      cursor: pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Include the header component -->
+  <div id="header-container"></div>
+
+  <!-- Include the sidebar component -->
+  <div id="sidebar-container"></div>
+
+  <div class="sidebar-icons">
+    <ul>
+      <a href="/profile">
+        <li data-tab="profile"><i class="fa-solid fa-user fa-2x" style="color: #000;"></i></li>
+      </a>
+      <a href="/gallery">
+        <li data-tab="gallery"><i class="fa-regular fa-images fa-2x"></i></li>
+      </a>
+      <a href="/map">
+        <li data-tab="map"><i class="fa-regular fa-map fa-2x"></i></li>
+      </a>
+      <a href="/contribute">
+        <li data-tab="contribute"><i class="fa-solid fa-plus fa-2x"></i></li>
+      </a>
+    </ul>
+  </div>
+
+
+  <div class="content">
+    <div id="profile" class="tab-content active">
+      <h1>Profile</h1>
+      <form id="profile-form">
+        <div id="image-container">
+          <img id="image" src="" alt="Image from JSON response">
+        </div>
+        <div class="input-field">
+          <label for="user-image">New Profile Picture:</label>
+          <input type="file" id="user-image" accept="image/*">
+        </div>
+        <div id="user-details">
+          <!-- User details will be displayed here -->
+        </div>
+        <div class="input-field">
+          <label for="organization">New Organization:</label>
+          <input type="text" id="organization" name="organization" required placeholder="Enter your organization">
+        </div>
+        <div class="input-field">
+          <label for="password">New Password:</label>
+          <input type="password" id="password" name="password" required placeholder="Enter your password">
+        </div>
+        <button type="submit">Update</button>
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

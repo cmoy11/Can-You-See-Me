@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register</title>
+    <link rel="icon" href="static/favicon/favicon.ico" type="image/x-icon">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&family=Fredoka:wght@300;400;500&display=swap');
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 35vh;
+      padding: 10px 40px;;
+    }
+
+    .container {
+      height: auto;
+    }
+
+    .container-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      font-family: 'Fredoka', sans-serif;
+      color: #FF0098;
+      font-size: 40px;
+      text-align: center;
+      margin-block-end: 10px;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      row-gap: 10px;
+      align-items: center;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    label {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 300;
+      margin: 0 0 5px 0 ;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    input {
+      width: 95%;
+      font-family: 'Fredoka', sans-serif;
+      height: 32px;
+      border-radius: 50px;
+      border: #BDBDBD solid 1px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    button {
+      height: 44px;
+      display: block;
+      margin: 10px auto;
+      width: 75%;
+      border-radius: 50px;
+      border: none;
+      background-color: #FF0098;
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 400;
+      font-size: 20px;
+    }
+
+    button:hover {
+      background-color: #fff;
+      border: #FF0098 1px solid;
+      color: #FF0098;
+      cursor: pointer;
+    }
+
+    #photo {
+        border: none;
+        border-radius: 0px;
+        grid-row: 2/3;
+        font-family: 'Fredoka', sans-serif;
+        font-size: 13px;
+        font-weight: 300;
+    }
+
+    .photo-upload {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 5fr;
+        justify-content: center;
+        align-items: center;
+    }
+
+    li {
+        font-family: 'Fredoka', sans-serif;
+        font-size: 13px;
+        font-weight: 300;
+    }
+
+    p {
+        font-family: 'Fredoka', sans-serif;
+        font-size: 13px;
+        font-weight: 300;
+    }
+
+    .guidelines {
+        grid-row: 1/3;
+    }
+
+  </style>
+</head>
+<body>
+  <header>
+    <img src="static/img/logo/100.svg" alt="Can You See Me Logo">
+  </header>
+  <div class="container">
+    <div class="container-content">
+      <h2>Register</h2>
+      <form id="login-form">
+        <div class="field">
+          <label for="first">First Name</label>
+          <input type="text" id="first" required>
+        </div>
+
+        <div class="field">
+            <label for="last">Last Name</label>
+            <input type="text" id="last" required>
+        </div>
+
+        <div class="field">
+            <label for="email">Email Address</label>
+            <input type="text" id="email" required>
+        </div>
+
+        <div class="field">
+            <label for="username">Username</label>
+            <input type="text" id="username" required>
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+            <input type="password" id="password" required>
+        </div>
+
+        <div class="photo-upload">
+            <label for="photo">Profile Picture</label>
+            <input type="file" id="photo" required>
+<!--            <input type="file" id="photo" required accept="image/*">-->
+            <div class="guidelines">
+                <p>Guidelines:</p>
+                <ul>
+                    <li>Make sure your face is visible with proper lighting</li>
+                    <li>There should only be one face in the picture</li>
+                </ul>
+            </div>
+        </div>
+        <button type="submit" class="cta-btn login-btn">Register</button>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <!-- Your footer content -->
+  </footer>
+
+  <script>
+    // JavaScript code for handling the login form submission
+    document.getElementById("login-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const firstName = document.getElementById("first").value;
+      const lastName = document.getElementById("last").value;
+      const email = document.getElementById("email").value;
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const pfp = document.getElementById("photo").value;
+      const loginData = {
+        firstName: firstName,
+        lastName: lastName,
+        email:email,
+        username:username,
+        password:password,
+        pfp:pfp
+      };
+
+      fetch("/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      })
+        // .then(response => response.json())
+        // .then(data => {
+        //   // Handle the response from the backend, e.g., show success or error message
+        //   console.log(data);
+        //   if (data.success) {
+        //     // Redirect to another page and pass user data as URL parameters
+
+        //     localStorage.setItem('username', data['data']['username']);
+        //     localStorage.setItem('user_id', data['data']['id']);
+        //     localStorage.setItem('org', data['data']['org']);
+        //     localStorage.setItem('image', data['data']['image']);
+
+        //     window.location.href = `/profile?id=${data['data']['id']}`;
+        //   } else {
+        //     // Handle authentication failure
+        //     alert('Authentication failed. Please try again.');
+        //   }
+        // })
+        .then(result => {
+            console.log(result.message);
+        })
+        .catch(error => {
+          // Handle any errors that occurred during the POST request
+          console.error("Error:", error);
+        });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,55 @@
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&family=Fredoka:wght@300;400;500&display=swap');
+
+body {
+    background-image: url('/static/img/bg.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+    overflow-y: hidden;
+}
+
+.login-dark {
+    position: relative;
+    height: 100vh;
+}
+
+.logo-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    max-width: 30%;
+    text-align: center; /* Center align the text within the container */
+}
+
+.btn {
+    margin: auto;
+    margin-bottom: 10px;
+    border-radius: 40px;
+}
+
+.btn-primary {
+    background-color: #FF0098;
+    border: 1px solid #ff0098;
+}
+
+.btn-primary:hover,
+.btn-primary:active {
+    background-color: #fff;
+    color: #474747;
+    border: 1px solid #ff0098;
+}
+
+.description {
+    color: #474747;
+    font-size: 1em;
+}
+
+.links {
+    color: #AFAFAF;
+    text-decoration: none;
+}
+
+.links:hover {
+    color: #000;
+}

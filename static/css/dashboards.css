@@ -1,0 +1,239 @@
+@import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&family=Fredoka:wght@300;400;500&display=swap');
+
+.logout-button {
+  position: absolute;
+  right: 10px;
+  padding: 5px 10px;
+  background-color: #ff0098;
+  color: #fff;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: bold;
+}
+
+.banner {
+  background-color: #fff;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 20%;
+}
+
+.logo-img {
+  margin: 0.5em;
+  width: 3rem;
+  height: 3rem;
+}
+
+.sidebar {
+  background-color: #333;
+  color: #fff;
+  width: 200px;
+  height: 100vh;
+  top: 0;
+  left: 0;
+  padding-top: 80px;
+  /* Adjust the top padding to make space for the banner */
+}
+
+.sidebar a {
+    text-decoration: none;
+}
+.sidebar.collapsed {
+  width: 50px;
+  /* Adjust the width of the collapsed sidebar */
+}
+
+.sidebar.collapsed ul {
+  display: none;
+}
+
+.sidebar.collapsed .logo-img {
+  display: none;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Fredoka, sans-serif;
+}
+
+#viewDiv {
+  padding: 0;
+  margin: 0;
+  height: 80vh;
+  width: 100%;
+}
+
+.sidebar {
+  background-color: #fff;
+  color: #ff0098;
+  width: 200px;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  left: 0;
+  padding-top: 60px;
+  /* Adjust the top padding to make space for the banner */
+  transition: width 0.3s ease;
+  /* Add transition for smooth collapse effect */
+}
+
+.sidebar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.sidebar li {
+  padding: 10px 20px;
+  cursor: pointer;
+  color: #ff0098;
+}
+
+.sidebar li.active {
+  color: #000;
+}
+
+.content {
+  margin-left: 200px;
+  padding: 20px;
+  background-color: #f9f9f9;
+  min-height: 100vh;
+  overflow: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .content {
+    margin-left: 50px;
+  }
+}
+
+.tab-content {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
+}
+
+h2 {
+  margin-bottom: 20px;
+}
+
+form {
+  max-width: 300px;
+}
+
+label,
+input,
+button {
+  display: block;
+  margin-bottom: 10px;
+}
+
+button {
+  background-color: #333;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 10px;
+  padding: 20px;
+}
+
+.image-grid img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+.sidebar-icons {
+  display: none;
+}
+
+/* Media query for small screens (up to 768px) */
+@media screen and (max-width: 768px) {
+  .banner {
+    height: 15%;
+    /* Adjust banner height for small screens */
+  }
+
+  .sidebar {
+    width: 70px;
+    /* Adjust the width of the collapsed sidebar for small screens */
+    padding-top: 3.5rem;
+    /* Adjust the top padding for small screens using rem */
+    display: none;
+  }
+
+  .sidebar-icons {
+      display: block;
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 10px;
+      z-index: 1;
+      background-color: #fff;
+      border-top: 0.5px #8E8E8E solid;
+  }
+
+  .sidebar-icons > ul {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-around;
+    list-style-type: none;
+    padding-inline-start: 0px !important;
+  }
+
+  .sidebar-icons i {
+    color: #ff0098;
+  }
+
+  .sidebar-icons i.active {
+    color: #000;
+  }
+
+  .sidebar li {
+    padding: 0.8rem 1.6rem;
+    /* Adjust padding for small screens using rem */
+  }
+
+  .content {
+    margin-left: 10px;
+    background-color: #fff;
+    /* Adjust content margin for small screens */
+  }
+}
+
+/* Media query for extra small screens (up to 480px) */
+@media screen and (max-width: 480px) {
+  .banner {
+    height: 10%;
+    /* Adjust banner height for extra small screens */
+  }
+
+  .sidebar {
+    width: 50px;
+    /* Adjust the width of the collapsed sidebar for extra small screens */
+    padding-top: 2rem;
+    /* Adjust the top padding for extra small screens using rem */
+  }
+
+  .sidebar li {
+    padding: 0.6rem 1rem;
+    /* Adjust padding for extra small screens using rem */
+  }
+
+  .content {
+    margin-left: 10px;
+    /* Adjust content margin for extra small screens */
+  }
+}

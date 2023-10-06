@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Anonymous+Pro:wght@400;700&family=Fredoka:wght@300;400;500&display=swap');
+
+    body {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      height: 70vh;
+      padding: 10px;
+    }
+
+    .container {
+      height: 50vw;
+    }
+
+    .container-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    h2 {
+      font-family: 'Fredoka', sans-serif;
+      color: #FF0098;
+      font-size: 40px;
+      text-align: center;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+      row-gap: 20px;
+      align-items: center;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+
+    label {
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 300;
+      margin: 0 0 5px 0 ;
+      font-size: 13px;
+      text-align: left;
+    }
+
+    input {
+      width: 95%;
+      font-family: 'Fredoka', sans-serif;
+      height: 32px;
+      border-radius: 50px;
+      border: #BDBDBD solid 1px;
+      padding: 0 10px;
+      font-size: 13px;
+      font-weight: 300;
+    }
+
+    button {
+      height: 44px;
+      display: block;
+      margin: 10px auto;
+      width: 75%;
+      border-radius: 50px;
+      border: none;
+      background-color: #FF0098;
+      color: #fff;
+      font-family: 'Fredoka', sans-serif;
+      font-weight: 400;
+      font-size: 20px;
+    }
+
+    button:hover {
+      background-color: #fff;
+      border: #FF0098 1px solid;
+      color: #FF0098;
+      cursor: pointer;
+    }
+  </style>
+  <link rel="icon" href="static/favicon/favicon.ico" type="image/x-icon">
+</head>
+<body>
+  <header>
+    <a href="/"><img src="static/img/logo/100.svg" alt="Can You See Me Logo"></a>
+  </header>
+  <div class="container">
+    <div class="container-content">
+      <h2>Welcome back!</h2>
+      <form id="login-form" action="/login" method="post">
+        <div class="field">
+          <label for="username">Username</label>
+          <input type="text" id="username" required>
+        </div>
+
+        <div class="field">
+          <label for="password">Password</label>
+          <input type="password" id="password" required>
+        </div>
+          
+        <button type="submit" class="cta-btn login-btn">Login</button>
+      </form>
+    </div>
+  </div>
+  <footer>
+    <!-- Your footer content -->
+  </footer>
+
+  <script>
+    // JavaScript code for handling the login form submission
+    document.getElementById("login-form").addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+      const loginData = {
+        username: username,
+        password: password,
+      };
+
+      fetch("/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(loginData),
+      })
+        .then(response => response.json())
+        .then(data => {
+          // Handle the response from the backend, e.g., show success or error message
+          console.log(data);
+          if (data.success) {
+            // Redirect to another page and pass user data as URL parameters
+
+            localStorage.setItem('username', data['data']['username']);
+            localStorage.setItem('user_id', data['data']['id']);
+            localStorage.setItem('org', data['data']['org']);
+            localStorage.setItem('image', data['data']['image']);
+
+            window.location.href = `/map?user_id=${data['data']['id']}`;
+          } else {
+            // Handle authentication failure
+            alert('Authentication failed. Please try again.');
+          }
+        })
+        .catch(error => {
+          // Handle any errors that occurred during the POST request
+          console.error("Error:", error);
+        });
+    });
+  </script>
+</body>
+</html>

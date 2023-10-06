@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+
+  <link rel="stylesheet" href="static/css/dashboards.css" />
+  <link rel="stylesheet" href="https://js.arcgis.com/4.27/esri/themes/light/main.css" />
+  <link rel="icon" href="static/favicon/favicon.ico" type="image/x-icon">
+  <script src="https://js.arcgis.com/4.27/"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exif-js"></script>
+</head>
+<body>
+
+  <!-- Include the header component -->
+  <div id="header-container"></div>
+
+  <!-- Include the sidebar component -->
+  <div id="sidebar-container"></div>
+
+
+    <div class="sidebar-icons">
+      <ul>
+        <a href="/profile"><li data-tab="profile"><i class="fa-solid fa-user fa-2x"></i></li></a>
+        <a href="/gallery"><li data-tab="gallery"><i class="fa-regular fa-images fa-2x"></i></li></a>
+        <a href="/map"><li data-tab="map"><i class="fa-regular fa-map fa-2x" style="color: #000;"></i></li></a>
+        <a href="/contribute"><li data-tab="contribute"><i class="fa-solid fa-plus fa-2x"></i></li></a>
+      </ul>
+    </div>
+
+  <div class="content">
+    <div id="gallery" class="tab-content active">
+      <h1>Map</h1>
+      <div id="viewDiv">
+      </div>
+    </div>
+  </div>
+
+  <script src="static/js/main.js"></script>
+</body>
+  <script>
+    const user1 = {
+  username: 'user1',
+  org: 'org1',
+  photos: [
+    {
+      url: "https://arcgis.github.io/arcgis-samples-javascript/sample-data/featurelayer-collection/photo-1.jpg",
+      id: 1,
+      location: {
+        lat: 34.033590,
+        lon: -118.239803
+      },
+      username: 'user1',
+      org: 'org1',
+    },
+    {
+      url: "https://arcgis.github.io/arcgis-samples-javascript/sample-data/featurelayer-collection/photo-2.jpg",
+      id: 2,
+      location: {
+        lat: 33.965642,
+        lon: -117.436190
+      },
+      username: 'user1',
+      org: 'org1',
+    }
+  ],
+}
+
+require([
+  "esri/config",
+  "esri/Map",
+  "esri/views/MapView",
+  "esri/layers/FeatureLayer",
+  "esri/core/promiseUtils",
+  "esri/Graphic",
+  "esri/geometry/Point",
+  "esri/rest/locator"
+], (
+  esriConfig,
+  Map,
+  MapView,
+  FeatureLayer,
+  promiseUtils,
+  Graphic,
+  Point,
+  locator
+) => {
+  esriConfig.apiKey = "";
+  const view = new MapView({
+    map: new Map({
+      basemap: "gray-vector"
+    }),
+    container: "viewDiv",
+    extent: {
+      spatialReference: {
+        wkid: 102100
+      },
+      xmin: -14488954,
+      ymin: 3457304,
+      xmax: -10656095,
+      ymax: 5250211
+    },
+
+    popup: {
+      dockEnabled: true,
+      dockOptions: {
+        position: "top-right",
+        breakpoint: false
+      }
+    }
+  });
+
+  view.when(
+    fetchImages(user1)
+      .then(getFeaturesFromPromises)
+      .then(createLayer)
+      .then(addToView)
+      .catch((e) => {
+        console.error("Creating FeatureLayer from photos failed", e);
+      }));
+
+  /**
+   * Fetches a list of images and returns a list of promises
+   */
+  function fetchImages(user) {
+    const photoList = user.photos
+    const graphicPromises = [];
+
+
+    for (let i = 0; i < photoList.length; i++) {
+      const graphicPromise = exifToGraphic(photoList[i]);
+      graphicPromises.push(graphicPromise);
+    }
+    //   console.log(graphicPromises)
+    // promiseUtils.eachAlways(graphicPromises).then((value) => {console.log(value)})
+    return promiseUtils.eachAlways(graphicPromises);
+    //   return graphicPromises
+
+
+  }
+
+  // Filters only promises that resolve with valid values (a graphic
+  // in this case) and resolves them as an array of graphics.
+  // In other words, each attempt at fetching an image returns a promise.
+  // Images that fail to fetch will be filtered out of the response array
+  // so the images that successfully load can be added to the layer.
+  function getFeaturesFromPromises(eachAlwaysResponses) {
+
+    return eachAlwaysResponses
+      .filter((graphicPromise) => {
+        return graphicPromise.value;
+      })
+      .map((graphicPromise) => {
+        console.log(graphicPromise)
+        return graphicPromise.value;
+      });
+
+  }
+
+  //  Creates a client-side FeatureLayer from an array of graphics
+  function createLayer(graphics) {
+
+    return new FeatureLayer({
+      source: graphics,
+      objectIdField: "OBJECTID",
+      fields: [
+        {
+          name: "OBJECTID",
+          type: "oid"
+        },
+        {
+          name: "url",
+          type: "string"
+        },
+        {
+          name: "userName",
+          type: "string"
+        },
+        {
+          name: "userOrg",
+          type: "string"
+        },
+
+      ],
+      popupTemplate: {
+        title: (event) => {
+          // console.log(event)
+          url = "https://geocode.arcgis.com/arcgis/rest/services/World/GeocodeServer"
+          params = {
+            location: new Point({
+              latitude: event.graphic.geometry.latitude,
+              longitude: event.graphic.geometry.longitude,
+            }
+            )
+          }
+
+          console.log(params)
+          return locator
+            .locationToAddress(url, params
+            )
+            .then((response) => {
+              console.log(response)
+              return response.address;
+            })
+            .catch((error) => {
+              return "The middle of nowhere";
+            });
+        },
+        content: [
+          {
+            type: "text", // TextContentElement
+            text: "Username: {userName}"
+          },
+          {
+            type: "text", // TextContentElement
+            text: "Organization: {userOrg}"
+          },
+          {
+            type: "media", // MediaContentElement
+            mediaInfos: [
+              {
+                type: "image",
+                value: {
+                  sourceURL: "{url}"
+                }
+              },
+            ]
+          }
+        ],
+      },
+      renderer: {
+        type: "simple",
+        symbol: {
+          type: "text",
+          color: "#7A003C",
+          text: "\ue661",
+          font: {
+            size: 20,
+            family: "CalciteWebCoreIcons"
+          }
+        }
+      }
+    });
+  }
+
+  // Adds a given layer to the map in the view
+  function addToView(layer) {
+    view.map.add(layer);
+  }
+
+  /**
+   * Fetches and loads an image from a url and gets the latitude/longitude
+   * GPS data from the EXIF data of the image. Returns a promise that
+   * resolves to a Graphic with a point geometry representing the location
+   * where the photo was taken.
+   */
+  function exifToGraphic(photo) {
+    const url = photo.url
+    const id = photo.id
+    const lat = photo.location.lat
+    const lon = photo.location.lon
+    const userName = photo.username
+    const userOrg = photo.org
+
+    const markerSymbol = {
+      type: "simple-marker",  // autocasts as new SimpleMarkerSymbol()
+      color: "blue",
+      size: "8",  // pixels
+    };
+
+    const location = new Point({
+      latitude: lat,
+      longitude: lon,
+
+    });
+
+    const graphic = new Graphic({
+      geometry: location,
+      //   symbol: markerSymbol,
+      attributes: {
+        url: url,
+        OBJECTID: id,
+        userName: userName,
+        userOrg: userOrg
+
+
+      }
+    })
+    return new Promise((resolve) => { resolve(graphic) });
+  }
+
+  // Converts a DMS coordinate to decimal degrees
+  function dmsDD([degrees, minutes, seconds], direction) {
+    let dd = degrees + minutes / 60 + seconds / 3600;
+    if (direction === "S" || direction === "W") {
+      dd *= -1;
+    }
+    return dd;
+  }
+});
+  </script>
+</html>
